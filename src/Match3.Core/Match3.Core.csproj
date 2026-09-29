@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <AssemblyName>Match3.Core</AssemblyName>
+    <RootNamespace>Match3.Core</RootNamespace>
+    <!-- Source lives in the Unity project; compile it from there. -->
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="../../unity/Assets/Match3/Core/**/*.cs" LinkBase="Core" />
+  </ItemGroup>
+</Project>

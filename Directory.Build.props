@@ -1,0 +1,11 @@
+<Project>
+  <PropertyGroup>
+    <LangVersion>9.0</LangVersion>                       <!-- match Unity -->
+    <ImplicitUsings>disable</ImplicitUsings>             <!-- C# 10 feature -->
+    <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <AnalysisLevel>latest-recommended</AnalysisLevel>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile> <!-- missing XML docs on public API become build errors -->
+  </PropertyGroup>
+</Project>
