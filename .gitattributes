@@ -1,0 +1,10 @@
+# Normalize all text files to LF in the repo and on checkout, on every OS.
+* text=auto eol=lf
+
+# Binary assets (Git auto-detects most, but be explicit for common Unity types)
+*.png binary
+*.jpg binary
+*.psd binary
+*.fbx binary
+*.wav binary
+*.mp3 binary
