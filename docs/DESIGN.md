@@ -1,0 +1,1 @@
+CI covers the core, not Unity. Running Unity in CI requires a license and adds several minutes per run. Because Match3.Core has no engine references (enforced by noEngineReferences), all game rules are fully tested without Unity. The Unity layer is verified manually.
