@@ -1,3 +1,5 @@
+using System;
+
 using Match3.Core.Grid;
 
 using Xunit;
@@ -36,6 +38,16 @@ namespace Match3.Core.Tests.Grid
         public void ToString_FormatsAsRowThenColumn()
         {
             Assert.Equal("(2, 3)", new Position(2, 3).ToString());
+        }
+
+        [Fact]
+        public void RowMajor_OrdersByRowThenColumn()
+        {
+            var positions = new[] { new Position(1, 0), new Position(0, 2), new Position(0, 1) };
+
+            Array.Sort(positions, Position.RowMajor);
+
+            Assert.Equal(new[] { new Position(0, 1), new Position(0, 2), new Position(1, 0) }, positions);
         }
     }
 }
