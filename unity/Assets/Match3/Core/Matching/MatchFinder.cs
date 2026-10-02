@@ -26,13 +26,62 @@ namespace Match3.Core.Matching
             AddRuns(board, board.Height, board.Width, (row, column) => new Position(row, column), runs);
             AddRuns(board, board.Width, board.Height, (column, row) => new Position(row, column), runs);
 
-            var matches = new List<Match>();
-            foreach (List<Position> run in runs)
+            // Runs that share a cell belong to one match. Only same-colored runs can share a cell,
+            // so no color check is needed.
+            int[] parent = new int[runs.Count];
+            for (int i = 0; i < parent.Length; i++)
             {
-                matches.Add(new Match(board.GemAt(run[0]), run));
+                parent[i] = i;
+            }
+
+            var claimedBy = new Dictionary<Position, int>();
+            for (int i = 0; i < runs.Count; i++)
+            {
+                foreach (Position position in runs[i])
+                {
+                    if (claimedBy.TryGetValue(position, out int other))
+                    {
+                        parent[Find(parent, i)] = Find(parent, other);
+                    }
+                    else
+                    {
+                        claimedBy.Add(position, i);
+                    }
+                }
+            }
+
+            var groups = new Dictionary<int, List<Position>>();
+            for (int i = 0; i < runs.Count; i++)
+            {
+                int root = Find(parent, i);
+                if (!groups.TryGetValue(root, out List<Position>? group))
+                {
+                    group = new List<Position>();
+                    groups.Add(root, group);
+                }
+
+                group.AddRange(runs[i]);
+            }
+
+            var matches = new List<Match>(groups.Count);
+            foreach (List<Position> group in groups.Values)
+            {
+                matches.Add(new Match(board.GemAt(group[0]), group));
             }
 
             return matches;
+        }
+
+        /// <summary>Returns the root of <paramref name="run"/>'s group, compressing the path as it goes.</summary>
+        private static int Find(int[] parent, int run)
+        {
+            while (parent[run] != run)
+            {
+                parent[run] = parent[parent[run]];
+                run = parent[run];
+            }
+
+            return run;
         }
 
         /// <summary>Appends every run of at least <see cref="Match.MinimumLength"/> same-colored gems to <paramref name="runs"/>.</summary>
