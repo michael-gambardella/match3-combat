@@ -30,8 +30,7 @@ namespace Match3.Core.Matching
 
             Position[] ordered = positions
                 .Distinct()
-                .OrderBy(position => position.Row)
-                .ThenBy(position => position.Column)
+                .OrderBy(position => position, Position.RowMajor)
                 .ToArray();
 
             if (ordered.Length < MinimumLength)

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Match3.Core.Grid
 {
@@ -20,6 +21,13 @@ namespace Match3.Core.Grid
             Row = row;
             Column = column;
         }
+
+        /// <summary>
+        /// Orders positions by row, then by column (reading order). Exposed as a comparer rather than
+        /// <see cref="IComparable{T}"/> because positions have no single natural order.
+        /// </summary>
+        public static IComparer<Position> RowMajor { get; } = Comparer<Position>.Create(
+            (a, b) => a.Row != b.Row ? a.Row.CompareTo(b.Row) : a.Column.CompareTo(b.Column));
 
         /// <summary>Zero-based row index, counted from the top of the board.</summary>
         public int Row { get; }
