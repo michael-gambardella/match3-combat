@@ -69,6 +69,12 @@ namespace Match3.Core.Matching
                 matches.Add(new Match(board.GemAt(group[0]), group));
             }
 
+            matches.Sort((a, b) =>
+            {
+                int byRow = a.Positions[0].Row.CompareTo(b.Positions[0].Row);
+                return byRow != 0 ? byRow : a.Positions[0].Column.CompareTo(b.Positions[0].Column);
+            });
+
             return matches;
         }
 
