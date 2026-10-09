@@ -114,3 +114,42 @@ board has no matches.
 many steps, `Resolve` throws `InvalidOperationException`.
 *Alternative considered:* looping until the board is clear. Rejected because a broken
 random source (for example, one that refills every gem with the same color) would hang.
+
+## Moves and generation
+
+### `Move` is a class
+A move swaps two orthogonally adjacent cells. The constructor rejects any other pair, and
+stores the cells in row-major order, so swapping A with B is the same move as swapping B
+with A.
+*Alternative considered:* a struct. Rejected because a struct's `default` value bypasses the
+constructor and would be a move from a cell to itself.
+
+### Legality is a local constant-time check
+`IsLegal` looks only at the row and column through each swapped cell, reading each gem as
+it would appear after the swap. Two matching neighbors on a line already complete a run of
+three, so each direction stops after two cells. A test checks that this agrees with a full
+`MatchFinder` rescan on 200 random boards.
+*Alternative considered:* calling `WithSwap` and scanning the whole board. Rejected for
+hints and validation, because copying the board makes every check O(W×H).
+
+### Same-colored swaps are never legal
+When both cells hold the same color, the swap leaves the board unchanged, so `IsLegal`
+returns false. That includes a swap of two gems that already sit inside a run.
+
+### Fills are match-free by construction
+`Generate` fills cells in row-major order and skips a color when the two cells to the left,
+or the two cells above, already have it, so no run of three can form. The chosen color is
+`allowed[random.NextInt(allowed.Count)]`, with `allowed` in `GemColors.All` order. A board
+with no legal move is discarded and the same random sequence continues, up to `MaxAttempts`
+(100); then `Generate` throws. The fill order and the draw rule are part of the
+determinism contract, pinned by golden tests.
+
+### Deadlock reshuffles by regenerating
+A board with no legal move is replaced by generating a new one.
+*Alternative considered:* a shuffle that preserves the count of each color. Considered and
+deferred.
+
+### Random draws index `GemColors.All`
+`GemColors.All` lists every `GemColor` in declaration order, and a draw is an index into
+that list. Each color occupies one slot regardless of its underlying value, so the values
+do not have to be contiguous. The list's order is part of the determinism contract.

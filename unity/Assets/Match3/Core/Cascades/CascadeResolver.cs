@@ -128,7 +128,7 @@ namespace Match3.Core.Cascades
                         continue;
                     }
 
-                    var gem = (GemColor)random.NextInt(ColorCount);
+                    GemColor gem = GemColors.All[random.NextInt(GemColors.All.Count)];
                     grid.Place(position, gem);
                     spawns.Add(new GemSpawn(position, gem));
                 }
