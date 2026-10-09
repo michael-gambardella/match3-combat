@@ -77,3 +77,40 @@ always produces the same result, which keeps tests stable, makes replays reprodu
 gives the presentation layer a consistent animation order. Row-major ordering is defined once,
 as `Position.RowMajor`, and exposed as a comparer instead of `IComparable` because positions
 have no single natural order.
+
+## Cascades
+
+### A cascade is structured steps, not an event stream
+`Resolve` returns a `CascadeResult`: one `CascadeStep` per round, then the settled board.
+Each step records the matches that cleared, the gems that fell, the gems that spawned, and
+the board afterward. Presentation animates a step by clearing the matches, then playing the
+falls and spawns together.
+*Alternative considered:* a flat stream of clear, fall, and spawn events. Rejected because a
+round is played as a group, and the next round is computed from that group's board. A flat
+stream would make the presentation layer reconstruct which events belong together.
+
+### Randomness is injected, and the generator is SplitMix64
+`Resolve` takes an `IRandomSource`. Tests pass a scripted source and assert every gem; the
+game passes `SeededRandom`. `SeededRandom` is SplitMix64, so one seed produces the same
+sequence on every platform and runtime.
+*Alternative considered:* `System.Random`. Rejected because its seeded sequence is an
+implementation detail that is not guaranteed to match between .NET and Unity, which would
+break replays and golden tests.
+
+### Row-major draw order is part of the determinism contract
+After gravity, each empty cell draws one color, left to right and then top to bottom.
+`Spawns` is stored in that same order. The same board and the same sequence then always
+place the same colors in the same cells. Walking the holes column by column would also be
+deterministic, but it would spend the sequence on different cells, so the contract names
+this order.
+
+### Cascades from new gems are allowed
+A step can leave a new match, whether gems that were already on the board fell into line or
+the refill itself matched. That match is the next step. Resolution stops only when the
+board has no matches.
+
+### The settle limit fails loudly
+`MaxSteps` is 50. Real boards settle in a handful of steps. If matches remain after that
+many steps, `Resolve` throws `InvalidOperationException`.
+*Alternative considered:* looping until the board is clear. Rejected because a broken
+random source (for example, one that refills every gem with the same color) would hang.
