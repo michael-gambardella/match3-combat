@@ -1,3 +1,22 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Match3.Core.Grid
+{
+    /// <summary>The set of gem colors.</summary>
+    public static class GemColors
+    {
+        /// <summary>
+        /// Every <see cref="GemColor"/>, ordered by underlying value. Random draws index into this list,
+        /// so its order is part of the determinism contract.
+        /// </summary>
+        public static IReadOnlyList<GemColor> All { get; } =
+            Array.AsReadOnly(Enum.GetValues(typeof(GemColor)).Cast<GemColor>().ToArray());
+    }
+}
+
+
 namespace Match3.Core.Grid
 {
     /// <summary>The color of a gem. Matching gems of a color earns action points of that color.</summary>
