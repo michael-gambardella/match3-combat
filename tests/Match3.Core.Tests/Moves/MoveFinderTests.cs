@@ -95,29 +95,6 @@ namespace Match3.Core.Tests.Moves
         }
 
         [Fact]
-        public void IsLegal_AgreesWithFullRescan_OnRandomBoards()
-        {
-            // The fast check only looks at the lines through the swapped cells. This verifies it against
-            // the slow definition: swap, run MatchFinder on the whole board, look for a swapped cell.
-            for (ulong seed = 0; seed < 200; seed++)
-            {
-                var random = new SeededRandom(seed);
-                Board board = Board.Create(6, 6, _ => GemColors.All[random.NextInt(GemColors.All.Count)]);
-
-                foreach (Move move in AllAdjacentMoves(board))
-                {
-                    bool expected = board.GemAt(move.First) != board.GemAt(move.Second) &&
-                        MatchFinder.FindMatches(board.WithSwap(move.First, move.Second))
-                            .Any(match => match.Positions.Contains(move.First) || match.Positions.Contains(move.Second));
-
-                    Assert.True(
-                        expected == MoveFinder.IsLegal(board, move),
-                        $"Seed {seed}, move {move}: expected {expected} on board\n{board}");
-                }
-            }
-        }
-
-        [Fact]
         public void FindLegalMoves_ReturnsEveryLegalMoveInRowMajorOrder()
         {
             Board board = BoardNotation.Parse("""
@@ -163,13 +140,5 @@ namespace Match3.Core.Tests.Moves
         }
 
         private static Position P(int row, int column) => new(row, column);
-
-        private static Move[] AllAdjacentMoves(Board board) =>
-            Enumerable.Range(0, board.Height)
-                .SelectMany(row => Enumerable.Range(0, board.Width).Select(column => P(row, column)))
-                .SelectMany(cell => new[] { P(cell.Row, cell.Column + 1), P(cell.Row + 1, cell.Column) }
-                    .Where(board.Contains)
-                    .Select(neighbor => new Move(cell, neighbor)))
-                .ToArray();
     }
 }

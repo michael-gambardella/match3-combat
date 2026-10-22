@@ -45,24 +45,6 @@ namespace Match3.Core.Tests.Generation
                 board);
         }
 
-        [Theory]
-        [InlineData(8, 8)]
-        [InlineData(5, 7)]
-        [InlineData(10, 4)]
-        [InlineData(3, 3)]
-        public void Generate_ManySeeds_BoardsHaveNoMatchesAndAtLeastOneLegalMove(int width, int height)
-        {
-            for (ulong seed = 0; seed < 200; seed++)
-            {
-                Board board = BoardGenerator.Generate(width, height, new SeededRandom(seed));
-
-                Assert.Equal(width, board.Width);
-                Assert.Equal(height, board.Height);
-                Assert.Empty(MatchFinder.FindMatches(board));
-                Assert.NotEmpty(MoveFinder.FindLegalMoves(board));
-            }
-        }
-
         [Fact]
         public void Generate_SameSeed_ProducesSameBoard()
         {

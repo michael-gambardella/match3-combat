@@ -153,3 +153,46 @@ deferred.
 `GemColors.All` lists every `GemColor` in declaration order, and a draw is an index into
 that list. Each color occupies one slot regardless of its underlying value, so the values
 do not have to be contiguous. The list's order is part of the determinism contract.
+
+## Testing strategy
+
+### Properties compare the code with a brute-force oracle
+A rule property checks the optimized implementation against the simplest statement of the
+rule. A cell is matched when some window of three consecutive cells in its row or column is
+one color. A swap is legal when `WithSwap` and a full `MatchFinder` scan find a match
+through one of the swapped cells. `FindLegalMoves` must be exactly those adjacent swaps, in
+row-major order. The production code stays fast; the tests keep the obvious definition.
+
+### Boards are drawn from two to six colors
+A generated board is filled from the first N colors in `GemColors.All`, with N chosen from
+2 through 6. Fewer colors make runs, legal moves, and cascades common, so most cases
+exercise those paths. A palette of all six colors rarely forms a run, and those boards
+seldom reach the matching and cascade code.
+
+### Counterexamples shrink by cropping edges
+On failure, smaller boards are made by dropping an edge row or an edge column, and any
+smaller board that still fails is kept. The result stays rectangular and full, which is the
+only shape a `Board` can have. A planted bug first failed on a 6×7 board; cropping reduced
+that counterexample to `YYY`, the smallest board that still broke the rule.
+
+### A cascade step must explain the board it produces
+The step-explanation property is the contract with the Unity layer. Playing a step's
+clears, then its falls and spawns, must reproduce `BoardAfter` exactly. Each cell of the
+result holds the gem that fell into it from the same column, the gem that spawned there, or
+the gem that never moved.
+
+### A golden replay guards recorded games
+One test plays a seeded game for thirty turns: generate a board, take a random legal move,
+resolve the cascade, and regenerate when the board has no legal move. It pins how many
+cascade steps ran, how many gems cleared, how many reshuffles happened, and the final
+board. The expected values come from an independent implementation of the rules. A failure
+means outcomes changed, so a replay recorded with an earlier build would play out
+differently. Update the expected values only for an intentional rule change, and say so in
+the pull request.
+
+### Each run draws fresh inputs, and a failure prints its replay
+No property pins a seed. Every run draws new boards, so a case one run misses can fail on
+the next. A failure prints FsCheck's replay value; rerunning with that value regenerates
+the same boards, including the shrunk counterexample.
+*Alternative considered:* fixing every property to one seed. Rejected because the suite
+would stop searching after the first run.

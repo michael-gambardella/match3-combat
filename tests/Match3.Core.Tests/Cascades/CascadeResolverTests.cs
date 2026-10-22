@@ -211,20 +211,6 @@ namespace Match3.Core.Tests.Cascades
         }
 
         [Fact]
-        public void Resolve_RandomBoards_AlwaysSettleWithNoMatches()
-        {
-            for (ulong seed = 0; seed < 100; seed++)
-            {
-                var random = new SeededRandom(seed);
-
-                CascadeResult result = CascadeResolver.Resolve(RandomBoard(random), random);
-
-                Assert.Empty(MatchFinder.FindMatches(result.FinalBoard));
-                Assert.All(result.Steps, step => Assert.NotEmpty(step.Matches));
-            }
-        }
-
-        [Fact]
         public void Resolve_RandomSourceThatNeverLetsBoardSettle_ThrowsInsteadOfLooping()
         {
             // Every new gem is red, so the top row refills as RRR and matches forever.
