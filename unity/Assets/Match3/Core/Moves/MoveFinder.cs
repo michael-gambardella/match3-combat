@@ -73,19 +73,43 @@ namespace Match3.Core.Moves
             return moves.AsReadOnly();
         }
 
-        private static void AddIfLegal(Board board, List<Move> moves, Position cell, Position neighbor)
+        /// <summary>Returns true when the board has at least one legal move, stopping at the first one found.</summary>
+        /// <remarks>Equivalent to <c>FindLegalMoves(board).Count &gt; 0</c>, without building the list.</remarks>
+        /// <exception cref="ArgumentNullException"><paramref name="board"/> is null.</exception>
+        public static bool HasLegalMove(Board board)
         {
-            if (!board.Contains(neighbor))
+            if (board is null)
             {
-                return;
+                throw new ArgumentNullException(nameof(board));
             }
 
-            var move = new Move(cell, neighbor);
-            if (IsLegal(board, move))
+            for (int row = 0; row < board.Height; row++)
             {
-                moves.Add(move);
+                for (int column = 0; column < board.Width; column++)
+                {
+                    var cell = new Position(row, column);
+                    if (IsLegalSwapWith(board, cell, new Position(row, column + 1)) ||
+                        IsLegalSwapWith(board, cell, new Position(row + 1, column)))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private static void AddIfLegal(Board board, List<Move> moves, Position cell, Position neighbor)
+        {
+            if (IsLegalSwapWith(board, cell, neighbor))
+            {
+                moves.Add(new Move(cell, neighbor));
             }
         }
+
+        /// <summary>True when <paramref name="neighbor"/> is on the board and swapping it with <paramref name="cell"/> is legal.</summary>
+        private static bool IsLegalSwapWith(Board board, Position cell, Position neighbor) =>
+            board.Contains(neighbor) && IsLegal(board, new Move(cell, neighbor));
 
         /// <summary>
         /// A read-only view of a board as it would look after a move, without copying the board.
