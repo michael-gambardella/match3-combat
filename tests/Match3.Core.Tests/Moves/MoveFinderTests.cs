@@ -122,6 +122,37 @@ namespace Match3.Core.Tests.Moves
         }
 
         [Fact]
+        public void HasLegalMove_BoardWithALegalMove_ReturnsTrue()
+        {
+            Board board = BoardNotation.Parse("""
+                RYBG
+                YRGB
+                RBYG
+                GYRB
+                """);
+
+            Assert.True(MoveFinder.HasLegalMove(board));
+        }
+
+        [Fact]
+        public void HasLegalMove_DeadlockedBoard_ReturnsFalse()
+        {
+            Board board = BoardNotation.Parse("""
+                RYB
+                YBR
+                BRY
+                """);
+
+            Assert.False(MoveFinder.HasLegalMove(board));
+        }
+
+        [Fact]
+        public void HasLegalMove_NullBoard_ThrowsArgumentNull()
+        {
+            Assert.Throws<ArgumentNullException>(() => MoveFinder.HasLegalMove(null!));
+        }
+
+        [Fact]
         public void IsLegal_NullBoard_ThrowsArgumentNull()
         {
             Assert.Throws<ArgumentNullException>(() => MoveFinder.IsLegal(null!, new Move(P(0, 0), P(0, 1))));

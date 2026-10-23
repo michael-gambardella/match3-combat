@@ -37,5 +37,11 @@ namespace Match3.Core.Tests.Properties
                 Assert.Equal(
                     board.AdjacentMoves().Where(move => MoveFinder.IsLegal(board, move)),
                     MoveFinder.FindLegalMoves(board)));
+
+
+        [Property]
+        public Property HasLegalMove_AgreesWithFindLegalMoves() =>
+            Prop.ForAll(GameArbitraries.Boards(), board =>
+                Assert.Equal(MoveFinder.FindLegalMoves(board).Count > 0, MoveFinder.HasLegalMove(board)));
     }
 }

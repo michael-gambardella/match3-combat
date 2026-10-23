@@ -48,7 +48,7 @@ namespace Match3.Core.Generation
             {
                 GemColor[] cells = Fill(width, height, random);
                 Board board = Board.Create(width, height, position => cells[(position.Row * width) + position.Column]);
-                if (MoveFinder.FindLegalMoves(board).Count > 0)
+                if (MoveFinder.HasLegalMove(board))
                 {
                     return board;
                 }

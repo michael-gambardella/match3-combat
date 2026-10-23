@@ -154,6 +154,34 @@ deferred.
 that list. Each color occupies one slot regardless of its underlying value, so the values
 do not have to be contiguous. The list's order is part of the determinism contract.
 
+## Combat
+
+### `Game` is the only mutable type in the core
+Everything a `Game` holds is immutable: the `Board`, the `ActionPoints`, and the results it
+returns. Its state changes only by replacing whole values, so all mutation in the core lives
+in one class. A result handed to the presentation layer never changes after the fact.
+
+### Two kinds of error, deliberately
+A bad argument throws `ArgumentException`: an illegal move, or an ability that is not in the
+loadout. A bad time throws `InvalidOperationException`: the game is over, or the player
+cannot afford the ability. Callers can tell "you passed the wrong thing" from "you can't do
+that right now." Every check runs before any work, so a failed call changes no state and
+draws no random numbers.
+
+### `DamageDealt` is the move's full damage
+`TurnResult.DamageDealt` is not reduced by the enemy's remaining health, so the UI can show
+a big hit even when it overkills. `EnemyHealth` itself is clamped at 0.
+
+### Rules and abilities are plain data
+`CombatRules` and `AbilityDefinition` hold only validated numbers and names, with no
+behavior. The Unity layer can author them as ScriptableObjects in the Inspector and convert
+them to these types, so designers balance encounters without code changes.
+
+### `ActionPoints` is immutable, like `Board`
+`Add` and `Spend` return a new pool. Pools can be compared directly in tests and reported
+in a `TurnResult` without defensive copies. Because `Spend` throws before `Game` assigns
+the result, an unaffordable ability leaves the player's AP untouched.
+
 ## Testing strategy
 
 ### Properties compare the code with a brute-force oracle
