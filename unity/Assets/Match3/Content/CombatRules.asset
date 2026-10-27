@@ -16,4 +16,4 @@ MonoBehaviour:
   _boardHeight: 8
   _enemyMaxHealth: 150
   _damagePerGem: 1
-  _turnLimit: 25
+  _turnLimit: 1

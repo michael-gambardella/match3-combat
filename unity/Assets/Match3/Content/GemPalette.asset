@@ -15,19 +15,19 @@ MonoBehaviour:
   _entries:
   - Gem: 0
     Sprite: {fileID: -2413806693520163455, guid: 05728aa4431c58a4e84405da206fd445, type: 3}
-    Tint: {r: 1, g: 0.4198113, b: 0.4198113, a: 1}
+    Tint: {r: 1, g: 0.4198113, b: 0.4198113, a: 0}
   - Gem: 1
     Sprite: {fileID: 7482667652216324306, guid: ec104b0be94007c44894950134c82fae, type: 3}
-    Tint: {r: 1, g: 0.96236783, b: 0.4481132, a: 1}
+    Tint: {r: 1, g: 0.96236783, b: 0.4481132, a: 0}
   - Gem: 2
     Sprite: {fileID: 7482667652216324306, guid: 71038d3c9c465a74f948d336cf81e18a, type: 3}
-    Tint: {r: 0.3726415, g: 0.5565817, b: 1, a: 1}
+    Tint: {r: 0.3726415, g: 0.5565817, b: 1, a: 0}
   - Gem: 3
     Sprite: {fileID: -712631045867808456, guid: f443f24b78260974db627f5f35d62953, type: 3}
-    Tint: {r: 0.42541033, g: 1, b: 0.4198113, a: 1}
+    Tint: {r: 0.42541033, g: 1, b: 0.4198113, a: 0}
   - Gem: 4
     Sprite: {fileID: -9095717837082945937, guid: ae6511ee90312e14b84ae383d35f6221, type: 3}
-    Tint: {r: 0.8773223, g: 0.2971698, b: 1, a: 1}
+    Tint: {r: 0.8773223, g: 0.2971698, b: 1, a: 0}
   - Gem: 5
     Sprite: {fileID: 3625043607559282579, guid: 37294289a4d2f7a4d87c91476002fbf6, type: 3}
-    Tint: {r: 0.2901961, g: 0.2901961, b: 0.36078432, a: 1}
+    Tint: {r: 0, g: 0, b: 0, a: 0}
