@@ -2,7 +2,8 @@
     "name": "Match3.View",
     "rootNamespace": "",
     "references": [
-        "Match3.Core"
+        "Match3.Core",
+        "Unity.InputSystem"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

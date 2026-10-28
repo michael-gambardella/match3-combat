@@ -160,6 +160,10 @@ namespace Match3.View.Boards
             return true;
         }
 
+        /// <summary>True when <paramref name="position"/> is a cell of the board currently shown.</summary>
+        public bool Contains(Position position) =>
+            position.Row >= 0 && position.Row < Height && position.Column >= 0 && position.Column < Width;
+
         private IEnumerator PlaySwap(Move move)
         {
             GemView first = TakeGem(move.First);
@@ -256,9 +260,6 @@ namespace Match3.View.Boards
         }
 
         private IEnumerable<GemView> AllGems() => _gems.Where(gem => gem != null);
-
-        private bool Contains(Position position) =>
-            position.Row >= 0 && position.Row < Height && position.Column >= 0 && position.Column < Width;
 
         private int IndexOf(Position position)
         {
