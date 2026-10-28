@@ -51,6 +51,13 @@ namespace Match3.View.Gems
             yield return Tween.Run(duration, Easing.InQuad, t => transform.localScale = Vector3.LerpUnclamped(start, Vector3.zero, t));
         }
 
+        /// <summary>Grows from nothing to normal size.</summary>
+        public IEnumerator Appear(float duration)
+        {
+            transform.localScale = Vector3.zero;
+            yield return Tween.Run(duration, Easing.OutQuad, t => transform.localScale = Vector3.LerpUnclamped(Vector3.zero, _baseScale, t));
+        }
+
         private void Awake()
         {
             _renderer = GetComponent<SpriteRenderer>();

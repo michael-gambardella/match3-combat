@@ -372,6 +372,9 @@ MonoBehaviour:
   _gemPrefab: {fileID: 3709366090807728324, guid: e48d97d100645fa4d85111e4f986a8a4, type: 3}
   _palette: {fileID: 11400000, guid: 03afe83d7ef042f4d9dd7e05e1422720, type: 2}
   _cellSize: 1
+  _swapDuration: 0.15
+  _clearDuration: 0.2
+  _fallSecondsPerCell: 0.07
 --- !u!4 &1925526809
 Transform:
   m_ObjectHideFlags: 0
