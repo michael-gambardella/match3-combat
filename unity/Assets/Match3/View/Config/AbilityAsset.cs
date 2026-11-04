@@ -18,7 +18,7 @@ namespace Match3.View.Config
     public sealed class AbilityAsset : ScriptableObject
     {
         [SerializeField, Tooltip("Shown on the ability button.")]
-        private string _displayName = "Fireball";
+        private string _displayName = string.Empty;
 
         [SerializeField, Tooltip("The AP color the ability spends.")]
         private GemColor _costColor = GemColor.Red;

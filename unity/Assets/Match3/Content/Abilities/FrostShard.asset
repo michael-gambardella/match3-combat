@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 216f65d6a1968f84b92db9cafb22da82, type: 3}
   m_Name: FrostShard
   m_EditorClassIdentifier: Match3.View::Match3.View.Config.AbilityAsset
-  _displayName: Fireball
+  _displayName: Frost Shard
   _costColor: 2
   _cost: 5
   _damage: 12

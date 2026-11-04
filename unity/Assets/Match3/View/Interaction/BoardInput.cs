@@ -6,6 +6,7 @@ using Match3.View.Boards;
 using Match3.View.Gems;
 
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 namespace Match3.View.Interaction
