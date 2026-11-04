@@ -48,6 +48,9 @@ namespace Match3.View.Controllers
         /// <summary>Raised whenever anything the HUD shows may have changed.</summary>
         public event Action StateChanged;
 
+        /// <summary>Raised when a new game starts, after the board is shown and before the first <see cref="StateChanged"/>.</summary>
+        public event Action GameStarted;
+
         /// <summary>The seed of the current game. Set it in the Inspector to replay the game.</summary>
         public ulong Seed { get; private set; }
 
@@ -103,6 +106,7 @@ namespace Match3.View.Controllers
             _boardView.Show(_game.Board);
 
             Debug.Log($"New game with seed {Seed}. Set Seed to {Seed} on the GameController to replay it.", this);
+            GameStarted?.Invoke();
             Refresh();
         }
 

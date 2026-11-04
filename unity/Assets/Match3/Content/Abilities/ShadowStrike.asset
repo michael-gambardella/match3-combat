@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 216f65d6a1968f84b92db9cafb22da82, type: 3}
   m_Name: ShadowStrike
   m_EditorClassIdentifier: Match3.View::Match3.View.Config.AbilityAsset
-  _displayName: Fireball
+  _displayName: Shadow Strike
   _costColor: 5
   _cost: 9
   _damage: 28
