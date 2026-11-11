@@ -175,25 +175,5 @@ namespace Match3.View.Controllers
                 Debug.Log(message, this);
             }
         }
-
-        // A development aid until the HUD exists: right-click the component header in Play mode.
-        [ContextMenu("Debug/Use First Affordable Ability")]
-        private void UseFirstAffordableAbility()
-        {
-            if (_game == null)
-            {
-                Debug.Log("Enter Play mode first.", this);
-                return;
-            }
-
-            AbilityDefinition ability = Abilities.FirstOrDefault(CanUse);
-            if (ability == null)
-            {
-                Debug.Log($"No ability is affordable right now. AP: {ActionPoints}.", this);
-                return;
-            }
-
-            UseAbility(ability);
-        }
     }
 }
