@@ -73,6 +73,12 @@ namespace Match3.View.Interaction
 
         private void OnPress(Pointer pointer)
         {
+            // Presses on the HUD belong to the UI, not the board.
+            if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
+            {
+                return;
+            }
+
             if (!TryGetCellUnder(pointer, out Position cell))
             {
                 ClearSelection();
