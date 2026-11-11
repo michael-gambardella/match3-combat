@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Match3.View::Match3.View.Config.CombatRulesAsset
   _boardWidth: 8
   _boardHeight: 8
-  _enemyMaxHealth: 100
+  _enemyMaxHealth: 125
   _damagePerGem: 1
   _turnLimit: 25
